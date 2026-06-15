@@ -76,6 +76,12 @@
         }
     }
 
+    // Lấy chuỗi HTML hiển thị cờ của đội bóng (dùng ảnh từ FlagCDN chất lượng cao)
+    function getTeamFlagHtml(team) {
+        if (!team) return `<span class="team-flag">🏳️</span>`;
+        return `<img src="https://flagcdn.com/w40/${team.iso}.png" class="flag-img" alt="${team.name} flag" onerror="this.src='https://cdn-icons-png.flaticon.com/512/33/33736.png'">`;
+    }
+
     // Reset dữ liệu về mặc định ban đầu
     function resetToDefault() {
         const initialData = window.WC_INITIAL_DATA;
@@ -423,10 +429,10 @@
                 
                 tableRowsHtml += `
                     <tr class="${rowClass}">
-                        <td class="team-col">
-                            <span class="team-flag">${team.flag}</span>
-                            <span class="team-name" title="${team.name}">${team.name}</span>
-                        </td>
+                         <td class="team-col">
+                             <span class="team-flag">${getTeamFlagHtml(team)}</span>
+                             <span class="team-name" title="${team.name}">${team.name}</span>
+                         </td>
                         <td>${team.played}</td>
                         <td>${team.won}</td>
                         <td>${team.drawn}</td>
@@ -504,11 +510,11 @@
                 <div class="match-teams-grid">
                     <div class="match-team-row home">
                         <span class="team-name" title="${homeTeam.name}">${homeTeam.name}</span>
-                        <span class="team-flag">${homeTeam.flag}</span>
+                        <span class="team-flag">${getTeamFlagHtml(homeTeam)}</span>
                     </div>
                     <div class="match-score-box">${scoreDisplay}</div>
                     <div class="match-team-row away">
-                        <span class="team-flag">${awayTeam.flag}</span>
+                        <span class="team-flag">${getTeamFlagHtml(awayTeam)}</span>
                         <span class="team-name" title="${awayTeam.name}">${awayTeam.name}</span>
                     </div>
                 </div>
@@ -590,9 +596,9 @@
         const awayTeam = state.teams[match.away];
 
         const homeName = homeTeam ? homeTeam.name : (match.placeholderHome || "Chưa xác định");
-        const homeFlag = homeTeam ? homeTeam.flag : `<span style="font-size:1.15rem;">🏳️</span>`;
+        const homeFlag = getTeamFlagHtml(homeTeam);
         const awayName = awayTeam ? awayTeam.name : (match.placeholderAway || "Chưa xác định");
-        const awayFlag = awayTeam ? awayTeam.flag : `<span style="font-size:1.15rem;">🏳️</span>`;
+        const awayFlag = getTeamFlagHtml(awayTeam);
 
         const homeScoreVal = isCompleted ? match.homeScore : "-";
         const awayScoreVal = isCompleted ? match.awayScore : "-";
@@ -686,7 +692,7 @@
         Object.entries(teamGoals).forEach(([teamId, goals]) => {
             if (goals > maxGoals) {
                 maxGoals = goals;
-                const flagHtml = state.teams[teamId] ? `<span style="margin-right:5px;">${state.teams[teamId].flag}</span>` : "";
+                const flagHtml = state.teams[teamId] ? `<span style="margin-right:5px;">${getTeamFlagHtml(state.teams[teamId])}</span>` : "";
                 topGoalTeam = `${flagHtml} ${state.teams[teamId]?.name || teamId} (${goals} bàn)`;
             }
         });
@@ -700,7 +706,7 @@
 
         topScorers.forEach((p, idx) => {
             const team = state.teams[p.team];
-            const flagHtml = team ? `<span style="margin-right:5px;">${team.flag}</span>` : "";
+            const flagHtml = team ? `<span style="margin-right:5px;">${getTeamFlagHtml(team)}</span>` : "";
             const item = document.createElement("div");
             item.className = "stats-item";
             item.innerHTML = `
@@ -721,7 +727,7 @@
 
         topAssists.forEach((p, idx) => {
             const team = state.teams[p.team];
-            const flagHtml = team ? `<span style="margin-right:5px;">${team.flag}</span>` : "";
+            const flagHtml = team ? `<span style="margin-right:5px;">${getTeamFlagHtml(team)}</span>` : "";
             const item = document.createElement("div");
             item.className = "stats-item";
             item.innerHTML = `
@@ -745,7 +751,7 @@
         } else {
             sortedDefenders.forEach(([teamId, count], idx) => {
                 const team = state.teams[teamId];
-                const flagHtml = team ? `<span style="margin-right:5px;">${team.flag}</span>` : "";
+                const flagHtml = team ? `<span style="margin-right:5px;">${getTeamFlagHtml(team)}</span>` : "";
                 const item = document.createElement("div");
                 item.className = "stats-item";
                 item.innerHTML = `
@@ -821,9 +827,9 @@
             }
 
             const homeName = homeTeam ? homeTeam.name : (match.placeholderHome || "Chưa xác định");
-            const homeFlag = homeTeam ? homeTeam.flag : `🏳️`;
+            const homeFlag = getTeamFlagHtml(homeTeam);
             const awayName = awayTeam ? awayTeam.name : (match.placeholderAway || "Chưa xác định");
-            const awayFlag = awayTeam ? awayTeam.flag : `🏳️`;
+            const awayFlag = getTeamFlagHtml(awayTeam);
 
             let scoreText = "vs";
             if (isCompleted) {
@@ -886,9 +892,9 @@
         const awayTeam = state.teams[match.away];
 
         document.getElementById("admin-home-name").innerText = homeTeam ? homeTeam.name : (match.placeholderHome || "Chưa xác định");
-        document.getElementById("admin-home-flag").innerHTML = homeTeam ? homeTeam.flag : "🏳️";
+        document.getElementById("admin-home-flag").innerHTML = getTeamFlagHtml(homeTeam);
         document.getElementById("admin-away-name").innerText = awayTeam ? awayTeam.name : (match.placeholderAway || "Chưa xác định");
-        document.getElementById("admin-away-flag").innerHTML = awayTeam ? awayTeam.flag : "🏳️";
+        document.getElementById("admin-away-flag").innerHTML = getTeamFlagHtml(awayTeam);
 
         // Hiển thị các khối nhập liệu
         document.getElementById("team-vs-display").style.display = "block";
