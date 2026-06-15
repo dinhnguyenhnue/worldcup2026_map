@@ -434,6 +434,7 @@
             const standings = calculateGroupStandings(groupName);
             const groupCard = document.createElement("div");
             groupCard.className = "group-card";
+            groupCard.setAttribute("data-group", groupName);
 
             let tableRowsHtml = "";
             standings.forEach((team, index) => {
@@ -518,6 +519,7 @@
         });
 
         // Render từng nhóm ngày
+        let dateIndex = 0;
         Object.keys(byDate).sort().forEach(dateKey => {
             const dayMatches = byDate[dateKey];
             const dateGroup = document.createElement("div");
@@ -525,9 +527,12 @@
 
             // Header ngày
             const dateHeader = document.createElement("div");
-            dateHeader.className = "schedule-date-header";
+            const colorIndex = (dateIndex % 7) + 1;
+            dateHeader.className = `schedule-date-header rainbow-${colorIndex}`;
             dateHeader.textContent = formatDateFull(dateKey);
             dateGroup.appendChild(dateHeader);
+            
+            dateIndex++;
 
             // Grid trận đấu
             const grid = document.createElement("div");
@@ -570,9 +575,7 @@
                     <div class="match-compact-status">
                         ${isCompleted ? `
                             <span class="match-compact-status-badge ft">KT</span>
-                            ${match.highlight ? `
-                                <button class="btn-highlight-compact" data-match-id="${match.id}">▶ ${match.time}</button>
-                            ` : `<span class="match-compact-time">${match.time}</span>`}
+                            <button class="btn-highlight-compact" data-match-id="${match.id}">▶ Highlight</button>
                         ` : `
                             <span class="match-compact-time">${match.time}</span>
                             <span class="match-compact-status-badge upcoming">Sắp tới</span>

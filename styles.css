@@ -20,6 +20,15 @@
     --color-accent-lime: #c6ff00;         /* Lime Yellow */
     --color-accent-teal: #00e5ff;         /* Teal Cyan */
     
+    /* 7 Rainbow Colors for FIFA World Cup 2026 Branding */
+    --wc-red: #e53935;
+    --wc-purple: #7c4dff;
+    --wc-blue: #536dfe;
+    --wc-green: #00c853;
+    --wc-lime: #c6ff00;
+    --wc-orange: #ff6d00;
+    --wc-coral: #ff6f61;
+    
     --color-green-primary: #69f0ae;
     --color-green-glow: rgba(105, 240, 174, 0.15);
     --color-red-primary: #ff5252;
@@ -49,6 +58,12 @@
 body {
     background-color: var(--bg-dark-primary);
     background-image: 
+        linear-gradient(135deg, 
+            rgba(229, 57, 53, 0.02) 0%, 
+            rgba(124, 77, 255, 0.02) 25%, 
+            rgba(0, 200, 83, 0.02) 50%, 
+            rgba(198, 255, 0, 0.02) 75%, 
+            rgba(83, 109, 254, 0.02) 100%),
         radial-gradient(at 0% 0%, rgba(124, 77, 255, 0.12) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(229, 57, 53, 0.08) 0px, transparent 50%),
         radial-gradient(at 50% 100%, rgba(83, 109, 254, 0.06) 0px, transparent 50%),
@@ -160,6 +175,18 @@ body {
     align-items: center;
     margin-bottom: 30px;
     box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.tournament-status-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--wc-red), var(--wc-orange), var(--wc-lime), var(--wc-green), var(--wc-blue), var(--wc-purple), var(--wc-coral));
 }
 
 .status-steps {
@@ -225,6 +252,18 @@ body {
     padding: 6px;
     margin-bottom: 30px;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.tabs-navigation::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, var(--wc-red), var(--wc-orange), var(--wc-lime), var(--wc-green), var(--wc-blue), var(--wc-purple), var(--wc-coral));
 }
 
 .tab-btn {
@@ -301,6 +340,14 @@ body {
 .group-card:hover {
     border-color: var(--border-glass-active);
 }
+
+/* Màu accent top border cho từng bảng đấu theo branding cầu vồng */
+.group-card[data-group="A"], .group-card[data-group="G"] { border-top: 3px solid var(--wc-red); }
+.group-card[data-group="B"], .group-card[data-group="H"] { border-top: 3px solid var(--wc-purple); }
+.group-card[data-group="C"], .group-card[data-group="I"] { border-top: 3px solid var(--wc-blue); }
+.group-card[data-group="D"], .group-card[data-group="J"] { border-top: 3px solid var(--wc-green); }
+.group-card[data-group="E"], .group-card[data-group="K"] { border-top: 3px solid var(--wc-orange); }
+.group-card[data-group="F"], .group-card[data-group="L"] { border-top: 3px solid var(--wc-coral); }
 
 .group-card-header {
     font-family: var(--font-title);
@@ -444,10 +491,19 @@ body {
     font-size: 0.95rem;
     font-weight: 600;
     color: var(--color-text-secondary);
-    padding: 8px 0;
+    padding: 8px 0 8px 10px;
     margin-bottom: 12px;
     border-bottom: 1px solid var(--border-glass);
+    transition: border-color var(--transition-speed);
 }
+
+.schedule-date-header.rainbow-1 { border-left: 3px solid var(--wc-red); }
+.schedule-date-header.rainbow-2 { border-left: 3px solid var(--wc-purple); }
+.schedule-date-header.rainbow-3 { border-left: 3px solid var(--wc-blue); }
+.schedule-date-header.rainbow-4 { border-left: 3px solid var(--wc-green); }
+.schedule-date-header.rainbow-5 { border-left: 3px solid var(--wc-orange); }
+.schedule-date-header.rainbow-6 { border-left: 3px solid var(--wc-coral); }
+.schedule-date-header.rainbow-7 { border-left: 3px solid var(--color-accent-lime); }
 
 /* Lưới trận đấu 2 cột */
 .schedule-matches-grid {
@@ -761,13 +817,56 @@ body.light-theme .schedule-date-header {
     font-family: var(--font-title);
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--color-gold-secondary);
     text-align: center;
     margin-bottom: 20px;
     padding: 10px;
     background: rgba(255,255,255,0.02);
     border-radius: 8px;
     border: 1px solid var(--border-glass);
+}
+
+.bracket-column-title span {
+    display: inline-block;
+}
+
+#col-l-r32 .bracket-column-title span,
+#col-r-r32 .bracket-column-title span {
+    background: linear-gradient(135deg, var(--wc-red) 30%, var(--wc-orange) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#col-l-r16 .bracket-column-title span,
+#col-r-r16 .bracket-column-title span {
+    background: linear-gradient(135deg, var(--wc-purple) 30%, var(--wc-blue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#col-l-quarter .bracket-column-title span,
+#col-r-quarter .bracket-column-title span {
+    background: linear-gradient(135deg, var(--wc-blue) 30%, var(--wc-green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#col-l-semi .bracket-column-title span,
+#col-r-semi .bracket-column-title span {
+    background: linear-gradient(135deg, var(--wc-green) 30%, var(--wc-lime) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#col-finals .bracket-column-title span {
+    background: linear-gradient(90deg, var(--wc-red), var(--wc-orange), var(--wc-lime), var(--wc-green), var(--wc-blue), var(--wc-purple), var(--wc-coral));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+#col-third-place .bracket-column-title span {
+    background: linear-gradient(135deg, var(--wc-orange) 30%, var(--wc-coral) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .bracket-matches-list {
@@ -1400,6 +1499,12 @@ body.light-theme {
     --card-shadow: 0 8px 24px 0 rgba(15, 23, 42, 0.06);
     
     background-image: 
+        linear-gradient(135deg, 
+            rgba(229, 57, 53, 0.015) 0%, 
+            rgba(124, 77, 255, 0.015) 25%, 
+            rgba(0, 200, 83, 0.015) 50%, 
+            rgba(198, 255, 0, 0.015) 75%, 
+            rgba(83, 109, 254, 0.015) 100%),
         radial-gradient(at 0% 0%, rgba(229, 57, 53, 0.06) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(124, 77, 255, 0.05) 0px, transparent 50%),
         radial-gradient(at 50% 100%, rgba(83, 109, 254, 0.04) 0px, transparent 50%);
