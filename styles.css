@@ -1,30 +1,36 @@
 /* Nhập các font chữ hiện đại từ Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono&display=swap');
 
-/* Thiết lập các biến CSS cho hệ thống màu sắc và phong cách */
+/* Thiết lập các biến CSS cho hệ thống màu sắc - World Cup 2026 Theme */
 :root {
-    --bg-dark-primary: #06090e;
-    --bg-dark-secondary: #0d1117;
-    --bg-glass: rgba(15, 22, 36, 0.7);
-    --bg-glass-hover: rgba(22, 33, 54, 0.85);
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --border-glass-active: rgba(212, 175, 55, 0.4);
+    --bg-dark-primary: #0c0f1a;
+    --bg-dark-secondary: #141828;
+    --bg-glass: rgba(20, 24, 48, 0.75);
+    --bg-glass-hover: rgba(30, 36, 64, 0.85);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --border-glass-active: rgba(229, 57, 53, 0.5);
     
-    --color-gold-primary: #d4af37;
-    --color-gold-secondary: #ffd700;
-    --color-gold-glow: rgba(212, 175, 55, 0.25);
+    /* World Cup 2026 Accent Colors */
+    --color-gold-primary: #e53935;        /* WC Red */
+    --color-gold-secondary: #ff6f61;      /* Coral Red */
+    --color-gold-glow: rgba(229, 57, 53, 0.25);
     
-    --color-green-primary: #00e676;
-    --color-green-glow: rgba(0, 230, 118, 0.15);
+    --color-accent-blue: #536dfe;         /* Electric Blue */
+    --color-accent-purple: #7c4dff;       /* Vivid Purple */
+    --color-accent-lime: #c6ff00;         /* Lime Yellow */
+    --color-accent-teal: #00e5ff;         /* Teal Cyan */
+    
+    --color-green-primary: #69f0ae;
+    --color-green-glow: rgba(105, 240, 174, 0.15);
     --color-red-primary: #ff5252;
     --color-red-glow: rgba(255, 82, 82, 0.15);
     
-    --color-text-primary: #f0f6fc;
-    --color-text-secondary: #8b949e;
-    --color-text-muted: #57606a;
+    --color-text-primary: #eef2ff;
+    --color-text-secondary: #a0aec0;
+    --color-text-muted: #636e80;
     
-    --card-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.5);
-    --glow-shadow: 0 0 20px 0 var(--color-gold-glow);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+    --glow-shadow: 0 0 25px 0 var(--color-gold-glow);
     
     --font-title: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -43,9 +49,10 @@
 body {
     background-color: var(--bg-dark-primary);
     background-image: 
-        radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(0, 230, 118, 0.03) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(15, 22, 36, 0.3) 0px, transparent 100%);
+        radial-gradient(at 0% 0%, rgba(124, 77, 255, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(229, 57, 53, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(83, 109, 254, 0.06) 0px, transparent 50%),
+        radial-gradient(at 80% 50%, rgba(198, 255, 0, 0.03) 0px, transparent 40%);
     background-attachment: fixed;
     color: var(--color-text-primary);
     font-family: var(--font-body);
@@ -92,14 +99,14 @@ body {
     height: 250px;
     width: 100%;
     position: relative;
-    background: linear-gradient(135deg, #0b1424 0%, #1a2a44 100%);
+    background: linear-gradient(135deg, #1a0a2e 0%, #16213e 40%, #0f3460 100%);
 }
 
 .banner-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.45;
+    opacity: 0.5;
 }
 
 .banner-overlay {
@@ -108,7 +115,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to bottom, rgba(6, 9, 14, 0.1) 0%, var(--bg-dark-primary) 100%);
+    background: linear-gradient(to bottom, rgba(12, 15, 26, 0.05) 0%, var(--bg-dark-primary) 95%);
 }
 
 .header-content {
@@ -128,7 +135,7 @@ body {
     font-weight: 800;
     letter-spacing: 2px;
     text-transform: uppercase;
-    background: linear-gradient(135deg, #ffffff 30%, var(--color-gold-secondary) 100%);
+    background: linear-gradient(135deg, #ffffff 20%, var(--color-accent-lime) 50%, #ffffff 80%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -212,12 +219,12 @@ body {
 .tabs-navigation {
     display: flex;
     gap: 10px;
-    background: rgba(15, 22, 36, 0.5);
+    background: rgba(20, 24, 48, 0.6);
     border: 1px solid var(--border-glass);
     border-radius: 14px;
     padding: 6px;
     margin-bottom: 30px;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
 }
 
 .tab-btn {
@@ -241,13 +248,13 @@ body {
 
 .tab-btn:hover {
     color: var(--color-text-primary);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .tab-btn.active {
-    background: var(--color-gold-primary);
-    color: #06090e;
-    box-shadow: 0 4px 15px var(--color-gold-glow);
+    background: linear-gradient(135deg, var(--color-gold-primary), #c62828);
+    color: #ffffff;
+    box-shadow: 0 4px 20px var(--color-gold-glow);
 }
 
 /* Khung hiển thị nội dung từng Tab */
@@ -387,7 +394,7 @@ body {
 }
 
 .standings-table tr.highlighted {
-    background: rgba(212, 175, 55, 0.04);
+    background: rgba(229, 57, 53, 0.04);
 }
 
 .standings-table td.pts-col {
@@ -468,7 +475,7 @@ body {
 }
 
 .match-compact-card.completed {
-    border-left: 3px solid rgba(212, 175, 55, 0.4);
+    border-left: 3px solid rgba(229, 57, 53, 0.4);
 }
 
 /* Phần thông tin bảng + đội */
@@ -563,7 +570,7 @@ body {
 }
 
 .match-compact-status-badge.ft {
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(229, 57, 53, 0.1);
     color: var(--color-gold-secondary);
 }
 
@@ -573,9 +580,9 @@ body {
 }
 
 .btn-highlight-compact {
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(229, 57, 53, 0.1);
     color: var(--color-gold-secondary);
-    border: 1px solid rgba(212, 175, 55, 0.25);
+    border: 1px solid rgba(229, 57, 53, 0.25);
     border-radius: 6px;
     padding: 3px 8px;
     cursor: pointer;
@@ -589,7 +596,7 @@ body {
 }
 
 .btn-highlight-compact:hover {
-    background: rgba(212, 175, 55, 0.25);
+    background: rgba(229, 57, 53, 0.25);
     border-color: var(--color-gold-primary);
 }
 
@@ -746,7 +753,7 @@ body.light-theme .schedule-date-header {
     50% { 
         box-shadow: 0 0 25px var(--color-gold-glow); 
         border-color: var(--color-gold-primary);
-        background-color: rgba(212, 175, 55, 0.08);
+        background-color: rgba(229, 57, 53, 0.08);
     }
 }
 
@@ -773,12 +780,12 @@ body.light-theme .schedule-date-header {
 
 /* Thẻ trận knockout */
 .knockout-match-card {
-    background: rgba(6, 9, 14, 0.75);
+    background: rgba(15, 18, 35, 0.85);
     border: 1px solid var(--border-glass);
     border-radius: 12px;
     padding: 12px;
     margin: 12px 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
     position: relative;
     transition: all var(--transition-speed) ease;
 }
@@ -786,11 +793,11 @@ body.light-theme .schedule-date-header {
 .knockout-match-card:hover {
     transform: scale(1.02);
     border-color: var(--border-glass-active);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+    box-shadow: 0 0 15px rgba(229, 57, 53, 0.1);
 }
 
 .knockout-match-card.completed {
-    border-color: rgba(212, 175, 55, 0.2);
+    border-color: rgba(229, 57, 53, 0.2);
 }
 
 .knockout-match-card.active-match {
@@ -849,7 +856,7 @@ body.light-theme .schedule-date-header {
 
 .knockout-team-row.winner .knockout-score {
     color: var(--color-gold-secondary);
-    background: rgba(212, 175, 55, 0.1);
+    background: rgba(229, 57, 53, 0.1);
 }
 
 .penalty-score {
@@ -935,7 +942,7 @@ body.light-theme .schedule-date-header {
     align-items: center;
     justify-content: space-between;
     padding: 8px 12px;
-    background: rgba(6, 9, 14, 0.4);
+    background: rgba(15, 18, 35, 0.4);
     border: 1px solid var(--border-glass);
     border-radius: 10px;
 }
@@ -1112,14 +1119,14 @@ body.light-theme .schedule-date-header {
     border-radius: 8px;
     cursor: pointer;
     transition: all var(--transition-speed) ease;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+    box-shadow: 0 4px 15px rgba(229, 57, 53, 0.2);
     width: 100%;
     margin-top: 10px;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 6px 20px rgba(229, 57, 53, 0.4);
 }
 
 .btn-secondary {
@@ -1150,7 +1157,7 @@ body.light-theme .schedule-date-header {
     font-size: 0.85rem;
     color: var(--color-text-secondary);
     line-height: 1.5;
-    background: rgba(6, 9, 14, 0.3);
+    background: rgba(15, 18, 35, 0.3);
     padding: 12px;
     border-radius: 8px;
     border-left: 3px solid var(--color-gold-primary);
@@ -1168,7 +1175,7 @@ body.light-theme .schedule-date-header {
     justify-content: space-between;
     align-items: center;
     padding: 10px 12px;
-    background: rgba(6, 9, 14, 0.3);
+    background: rgba(15, 18, 35, 0.3);
     border: 1px solid var(--border-glass);
     border-radius: 8px;
     margin-bottom: 8px;
@@ -1183,8 +1190,8 @@ body.light-theme .schedule-date-header {
 
 .admin-match-row.selected {
     border-color: var(--color-gold-primary);
-    background: rgba(212, 175, 55, 0.05);
-    box-shadow: 0 0 10px rgba(212, 175, 55, 0.1);
+    background: rgba(229, 57, 53, 0.05);
+    box-shadow: 0 0 10px rgba(229, 57, 53, 0.1);
 }
 
 /* ==========================================
@@ -1379,31 +1386,31 @@ body.light-theme .schedule-date-header {
 
 /* Giao diện sáng (Light Theme) */
 body.light-theme {
-    --bg-dark-primary: #f0f3f8;
+    --bg-dark-primary: #fafbff;
     --bg-dark-secondary: #ffffff;
-    --bg-glass: rgba(255, 255, 255, 0.85);
-    --bg-glass-hover: rgba(255, 255, 255, 0.95);
+    --bg-glass: rgba(255, 255, 255, 0.9);
+    --bg-glass-hover: rgba(255, 255, 255, 0.97);
     --border-glass: rgba(0, 0, 0, 0.08);
-    --border-glass-active: rgba(212, 175, 55, 0.6);
+    --border-glass-active: rgba(229, 57, 53, 0.5);
     
-    --color-text-primary: #0f172a;
-    --color-text-secondary: #475569;
-    --color-text-muted: #94a3b8;
+    --color-text-primary: #1a1a2e;
+    --color-text-secondary: #4a5568;
+    --color-text-muted: #a0aec0;
     
-    --card-shadow: 0 10px 30px 0 rgba(15, 23, 42, 0.06);
+    --card-shadow: 0 8px 24px 0 rgba(15, 23, 42, 0.06);
     
     background-image: 
-        radial-gradient(at 0% 0%, rgba(212, 175, 55, 0.08) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(0, 230, 118, 0.04) 0px, transparent 50%),
-        radial-gradient(at 50% 50%, rgba(255, 255, 255, 0.5) 0px, transparent 100%);
+        radial-gradient(at 0% 0%, rgba(229, 57, 53, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(124, 77, 255, 0.05) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(83, 109, 254, 0.04) 0px, transparent 50%);
 }
 
 body.light-theme .banner-overlay {
-    background: linear-gradient(to bottom, rgba(240, 243, 248, 0.1) 0%, var(--bg-dark-primary) 100%);
+    background: linear-gradient(to bottom, rgba(250, 251, 255, 0.1) 0%, var(--bg-dark-primary) 95%);
 }
 
 body.light-theme .logo-title h1 {
-    background: linear-gradient(135deg, #0f172a 40%, #a17b18 100%);
+    background: linear-gradient(135deg, #1a1a2e 30%, #e53935 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: none;
@@ -1428,12 +1435,12 @@ body.light-theme .knockout-match-card {
 }
 
 body.light-theme .knockout-match-card.completed {
-    border-color: rgba(212, 175, 55, 0.15);
+    border-color: rgba(229, 57, 53, 0.15);
 }
 
 body.light-theme .knockout-match-card.active-match {
     border-color: var(--color-gold-primary);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 0 15px rgba(229, 57, 53, 0.15);
 }
 
 body.light-theme .knockout-team-row.winner {
@@ -1466,7 +1473,7 @@ body.light-theme .admin-match-row:hover {
 }
 
 body.light-theme .admin-match-row.selected {
-    background: rgba(212, 175, 55, 0.06);
+    background: rgba(229, 57, 53, 0.06);
     border-color: var(--color-gold-primary);
 }
 
@@ -1493,7 +1500,7 @@ body.light-theme .tab-btn:hover {
 body.light-theme .tab-btn.active {
     background: var(--color-gold-primary);
     color: #ffffff;
-    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+    box-shadow: 0 4px 15px rgba(229, 57, 53, 0.15);
 }
 
 body.light-theme .btn-control {
