@@ -63,35 +63,33 @@
         <main id="main-content">
             <!-- TAB 1: VÒNG BẢNG & BẢNG XẾP HẠNG -->
             <div class="tab-content active" id="group-stage-tab" role="tabpanel" aria-labelledby="tab-btn-group">
-                <div class="group-stage-layout">
-                    <!-- Lưới chứa 12 bảng đấu (A -> L) -->
-                    <section class="groups-grid" id="groups-grid" aria-label="Danh sách bảng đấu"></section>
+                <!-- Lưới chứa 12 bảng đấu (A -> L) -->
+                <section class="groups-grid" id="groups-grid" aria-label="Danh sách bảng đấu"></section>
 
-                    <!-- Lịch thi đấu vòng bảng bên phải -->
-                    <aside class="group-matches-sidebar" id="group-matches-sidebar" aria-label="Lịch thi đấu vòng bảng">
-                        <div class="sidebar-title">
-                            <h2>Lịch thi đấu</h2>
-                            <select class="filter-selector" id="group-filter" aria-label="Lọc lịch thi đấu">
-                                <option value="all">Tất cả bảng đấu</option>
-                                <option value="A">Bảng A</option>
-                                <option value="B">Bảng B</option>
-                                <option value="C">Bảng C</option>
-                                <option value="D">Bảng D</option>
-                                <option value="E">Bảng E</option>
-                                <option value="F">Bảng F</option>
-                                <option value="G">Bảng G</option>
-                                <option value="H">Bảng H</option>
-                                <option value="I">Bảng I</option>
-                                <option value="J">Bảng J</option>
-                                <option value="K">Bảng K</option>
-                                <option value="L">Bảng L</option>
-                            </select>
-                        </div>
-                        <div class="matches-scroll-container" id="group-matches-list">
-                            <!-- Các trận đấu sẽ được render động bằng JS -->
-                        </div>
-                    </aside>
-                </div>
+                <!-- Lịch thi đấu vòng bảng - kiểu FIFA -->
+                <section class="schedule-section" id="schedule-section" aria-label="Lịch thi đấu vòng bảng">
+                    <div class="schedule-header">
+                        <h2>Trận đấu</h2>
+                        <select class="filter-selector" id="group-filter" aria-label="Lọc lịch thi đấu">
+                            <option value="all">Tất cả bảng đấu</option>
+                            <option value="A">Bảng A</option>
+                            <option value="B">Bảng B</option>
+                            <option value="C">Bảng C</option>
+                            <option value="D">Bảng D</option>
+                            <option value="E">Bảng E</option>
+                            <option value="F">Bảng F</option>
+                            <option value="G">Bảng G</option>
+                            <option value="H">Bảng H</option>
+                            <option value="I">Bảng I</option>
+                            <option value="J">Bảng J</option>
+                            <option value="K">Bảng K</option>
+                            <option value="L">Bảng L</option>
+                        </select>
+                    </div>
+                    <div id="group-matches-list">
+                        <!-- Các trận đấu nhóm theo ngày sẽ được render động bằng JS -->
+                    </div>
+                </section>
             </div>
 
             <!-- TAB 2: VÒNG LOẠI TRỰC TIẾP (KNOCKOUT) -->

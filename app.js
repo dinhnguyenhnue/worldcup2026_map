@@ -486,7 +486,7 @@
         renderGroupMatchesSidebar();
     }
 
-    // Render danh sách trận đấu vòng bảng
+    // Render danh sách trận đấu vòng bảng (kiểu FIFA - nhóm theo ngày)
     function renderGroupMatchesSidebar() {
         const filterVal = document.getElementById("group-filter").value;
         const matchesContainer = document.getElementById("group-matches-list");
@@ -509,53 +509,100 @@
             return;
         }
 
+        // Nhóm trận theo ngày
+        const byDate = {};
         filteredMatches.forEach(match => {
-            const homeTeam = state.teams[match.home];
-            const awayTeam = state.teams[match.away];
-            const isCompleted = match.status === "completed";
-            
-            const matchCard = document.createElement("div");
-            matchCard.className = "match-item-card";
-
-            let scoreDisplay = "vs";
-            if (isCompleted) {
-                scoreDisplay = `${match.homeScore} - ${match.awayScore}`;
-            }
-
-            matchCard.innerHTML = `
-                <div class="match-meta-info">
-                    <span class="match-group-badge">Bảng ${match.group} • Lượt ${match.round}</span>
-                    <span>${formatDate(match.date)} ${match.time}</span>
-                </div>
-                <div class="match-teams-grid">
-                    <div class="match-team-row home">
-                        <span class="team-flag">${getTeamFlagHtml(homeTeam)}</span>
-                        <span class="team-name" title="${homeTeam.name}">${homeTeam.name}</span>
-                    </div>
-                    <div class="match-score-box">${scoreDisplay}</div>
-                    <div class="match-team-row away">
-                        <span class="team-flag">${getTeamFlagHtml(awayTeam)}</span>
-                        <span class="team-name" title="${awayTeam.name}">${awayTeam.name}</span>
-                    </div>
-                </div>
-                <div class="match-actions-footer">
-                    <span class="stadium-text" title="${match.stadium}">🏟️ ${match.stadium}</span>
-                    ${isCompleted ? `
-                        <button class="btn-highlight" data-match-id="${match.id}">
-                            🎥 Highlight
-                        </button>
-                    ` : `<span style="color: var(--color-text-muted);">Sắp diễn ra</span>`}
-                </div>
-            `;
-
-            // Gắn sự kiện xem highlight
-            const btnHighlight = matchCard.querySelector(".btn-highlight");
-            if (btnHighlight) {
-                btnHighlight.addEventListener("click", () => showHighlightModal(match));
-            }
-
-            matchesContainer.appendChild(matchCard);
+            const d = match.date;
+            if (!byDate[d]) byDate[d] = [];
+            byDate[d].push(match);
         });
+
+        // Render từng nhóm ngày
+        Object.keys(byDate).sort().forEach(dateKey => {
+            const dayMatches = byDate[dateKey];
+            const dateGroup = document.createElement("div");
+            dateGroup.className = "schedule-date-group";
+
+            // Header ngày
+            const dateHeader = document.createElement("div");
+            dateHeader.className = "schedule-date-header";
+            dateHeader.textContent = formatDateFull(dateKey);
+            dateGroup.appendChild(dateHeader);
+
+            // Grid trận đấu
+            const grid = document.createElement("div");
+            grid.className = "schedule-matches-grid";
+
+            dayMatches.forEach(match => {
+                const homeTeam = state.teams[match.home];
+                const awayTeam = state.teams[match.away];
+                const isCompleted = match.status === "completed";
+
+                const isHomeWin = isCompleted && match.homeScore > match.awayScore;
+                const isAwayWin = isCompleted && match.awayScore > match.homeScore;
+
+                const card = document.createElement("div");
+                card.className = `match-compact-card${isCompleted ? " completed" : ""}`;
+
+                card.innerHTML = `
+                    <div class="match-compact-main">
+                        <div class="match-compact-group-label">Bảng ${match.group}</div>
+                        <div class="match-compact-teams">
+                            <div class="match-compact-team-row${isHomeWin ? " winner" : (isCompleted && !isHomeWin ? " loser" : "")}">
+                                <span class="team-flag">${getTeamFlagHtml(homeTeam)}</span>
+                                <span class="team-name-text">${homeTeam ? homeTeam.name : "?"}</span>
+                            </div>
+                            <div class="match-compact-team-row${isAwayWin ? " winner" : (isCompleted && !isAwayWin ? " loser" : "")}">
+                                <span class="team-flag">${getTeamFlagHtml(awayTeam)}</span>
+                                <span class="team-name-text">${awayTeam ? awayTeam.name : "?"}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="match-compact-score-area">
+                        ${isCompleted ? `
+                            <span class="match-compact-score${isHomeWin ? " winner-score" : ""}">${match.homeScore}</span>
+                            <span class="match-compact-score${isAwayWin ? " winner-score" : ""}">${match.awayScore}</span>
+                        ` : `
+                            <span class="match-compact-score">-</span>
+                            <span class="match-compact-score">-</span>
+                        `}
+                    </div>
+                    <div class="match-compact-status">
+                        ${isCompleted ? `
+                            <span class="match-compact-status-badge ft">KT</span>
+                            ${match.highlight ? `
+                                <button class="btn-highlight-compact" data-match-id="${match.id}">▶ ${match.time}</button>
+                            ` : `<span class="match-compact-time">${match.time}</span>`}
+                        ` : `
+                            <span class="match-compact-time">${match.time}</span>
+                            <span class="match-compact-status-badge upcoming">Sắp tới</span>
+                        `}
+                    </div>
+                `;
+
+                // Gắn sự kiện xem highlight
+                const btnHighlight = card.querySelector(".btn-highlight-compact");
+                if (btnHighlight) {
+                    btnHighlight.addEventListener("click", () => showHighlightModal(match));
+                }
+
+                grid.appendChild(card);
+            });
+
+            dateGroup.appendChild(grid);
+            matchesContainer.appendChild(dateGroup);
+        });
+    }
+
+    // Format ngày đầy đủ kiểu "Vòng đấu bảng · Thứ 6, 12/6"
+    function formatDateFull(dateStr) {
+        if (!dateStr) return "";
+        const parts = dateStr.split("-");
+        if (parts.length !== 3) return dateStr;
+        const dt = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+        const dayNames = ["Chủ nhật", "Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"];
+        const dayName = dayNames[dt.getDay()];
+        return `Vòng đấu bảng · ${dayName}, ${parts[2]}/${parts[1]}`;
     }
 
     // TAB 2: Render Sơ đồ nhánh đấu loại trực tiếp (Knockout Bracket)
@@ -1205,11 +1252,15 @@
     // Cập nhật thanh tiến trình giải đấu
     function updateTournamentProgressBar() {
         const completedGroup = state.matches.filter(m => m.status === "completed").length;
+        const totalGroup = state.matches.length; // 72 trận vòng bảng
         
         let completedKnockout = 0;
         const stages = ["round_32", "round_16", "quarter", "semi", "third_place", "final"];
+        const stageCompleted = {};
         stages.forEach(stage => {
-            completedKnockout += state.knockout[stage].filter(m => m.status === "completed").length;
+            const count = state.knockout[stage].filter(m => m.status === "completed").length;
+            stageCompleted[stage] = count;
+            completedKnockout += count;
         });
 
         const totalCompleted = completedGroup + completedKnockout;
@@ -1226,19 +1277,19 @@
         // Gỡ bỏ class active trước
         [stepGroup, stepR32, stepR16, stepQuarter, stepSemi, stepFinal].forEach(el => el.classList.remove("active"));
 
-        if (totalCompleted === 104) {
+        // Highlight step dựa trên vòng đấu đang diễn ra
+        if (stageCompleted["final"] > 0) {
             stepFinal.classList.add("active");
-        } else if (totalCompleted >= 102) {
-            stepFinal.classList.add("active");
-        } else if (totalCompleted >= 96) {
+        } else if (stageCompleted["semi"] > 0) {
             stepSemi.classList.add("active");
-        } else if (totalCompleted >= 88) {
+        } else if (stageCompleted["quarter"] > 0) {
             stepQuarter.classList.add("active");
-        } else if (totalCompleted >= 72) {
+        } else if (stageCompleted["round_16"] > 0) {
             stepR16.classList.add("active");
-        } else if (totalCompleted > 0) {
+        } else if (stageCompleted["round_32"] > 0) {
             stepR32.classList.add("active");
         } else {
+            // Vòng bảng đang diễn ra hoặc chưa bắt đầu
             stepGroup.classList.add("active");
         }
     }

@@ -268,22 +268,11 @@ body {
 /* ==========================================
    TAB 1: VÒNG BẢNG & BẢNG XẾP HẠNG
    ========================================== */
-.group-stage-layout {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-}
-
-@media (max-width: 1024px) {
-    .group-stage-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
 .groups-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 20px;
+    margin-bottom: 30px;
 }
 
 @media (max-width: 768px) {
@@ -406,28 +395,24 @@ body {
     color: var(--color-gold-secondary);
 }
 
-/* Lịch thi đấu vòng bảng bên phải */
-.group-matches-sidebar {
-    background: var(--bg-glass);
-    border: 1px solid var(--border-glass);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: var(--card-shadow);
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-    max-height: 850px;
+/* ============ SCHEDULE SECTION (kiểu FIFA) ============ */
+.schedule-section {
+    margin-top: 10px;
 }
 
-.sidebar-title {
+.schedule-header {
     font-family: var(--font-title);
     font-size: 1.3rem;
     font-weight: 700;
     color: var(--color-text-primary);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.schedule-header h2 {
+    margin: 0;
 }
 
 .filter-selector {
@@ -442,123 +427,185 @@ body {
     cursor: pointer;
 }
 
-.matches-scroll-container {
-    overflow-y: auto;
-    flex-grow: 1;
-    padding-right: 5px;
+/* Nhóm ngày */
+.schedule-date-group {
+    margin-bottom: 24px;
 }
 
-/* Thẻ trận đấu */
-.match-item-card {
-    background: rgba(6, 9, 14, 0.4);
+.schedule-date-header {
+    font-family: var(--font-title);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    padding: 8px 0;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+/* Lưới trận đấu 2 cột */
+.schedule-matches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+}
+
+/* Compact match card kiểu FIFA */
+.match-compact-card {
+    background: var(--bg-glass);
     border: 1px solid var(--border-glass);
     border-radius: 12px;
-    padding: 12px 15px;
-    margin-bottom: 12px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     transition: all 0.2s ease;
+    cursor: default;
 }
 
-.match-item-card:hover {
+.match-compact-card:hover {
     border-color: var(--border-glass-active);
-    background: rgba(15, 22, 36, 0.4);
+    background: rgba(15, 22, 36, 0.5);
 }
 
-.match-meta-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 8px;
+.match-compact-card.completed {
+    border-left: 3px solid rgba(212, 175, 55, 0.4);
 }
 
-.match-group-badge {
-    background: rgba(212, 175, 55, 0.15);
+/* Phần thông tin bảng + đội */
+.match-compact-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.match-compact-group-label {
+    font-size: 0.7rem;
+    font-weight: 700;
     color: var(--color-gold-secondary);
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
 }
 
-.match-teams-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
+.match-compact-teams {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
-.match-team-row {
+.match-compact-team-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    font-size: 0.85rem;
 }
 
-.match-team-row.home {
-    justify-content: flex-end;
+.match-compact-team-row .team-flag {
+    flex-shrink: 0;
 }
 
-.match-team-row.away {
-    justify-content: flex-start;
-}
-
-.match-score-box {
-    background: var(--bg-dark-primary);
-    border: 1px solid var(--border-glass);
-    border-radius: 6px;
-    padding: 4px 10px;
-    font-family: var(--font-mono);
-    font-weight: bold;
-    font-size: 1.05rem;
-    min-width: 55px;
-    text-align: center;
-}
-
-.match-score-box.live {
-    border-color: var(--color-green-primary);
-    color: var(--color-green-primary);
-    animation: pulseGlow 1.5s infinite alternate;
-}
-
-@keyframes pulseGlow {
-    from { box-shadow: 0 0 2px var(--color-green-glow); }
-    to { box-shadow: 0 0 10px var(--color-green-glow); }
-}
-
-.match-actions-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.75rem;
-    border-top: 1px solid rgba(255,255,255,0.03);
-    padding-top: 8px;
-    margin-top: 4px;
-}
-
-.stadium-text {
-    color: var(--color-text-muted);
+.match-compact-team-row .team-name-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 160px;
 }
 
-.btn-highlight {
+.match-compact-team-row.winner {
+    font-weight: 700;
+    color: #fff;
+}
+
+.match-compact-team-row.loser {
+    color: var(--color-text-muted);
+}
+
+/* Phần tỷ số */
+.match-compact-score-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 30px;
+    flex-shrink: 0;
+}
+
+.match-compact-score {
+    font-family: var(--font-mono);
+    font-weight: bold;
+    font-size: 0.95rem;
+    line-height: 1.2;
+}
+
+.match-compact-score.winner-score {
+    color: var(--color-gold-secondary);
+}
+
+/* Phần highlight/trạng thái */
+.match-compact-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    min-width: 60px;
+}
+
+.match-compact-time {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+.match-compact-status-badge {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.match-compact-status-badge.ft {
     background: rgba(212, 175, 55, 0.1);
     color: var(--color-gold-secondary);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.match-compact-status-badge.upcoming {
+    background: rgba(255,255,255,0.05);
+    color: var(--color-text-muted);
+}
+
+.btn-highlight-compact {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--color-gold-secondary);
+    border: 1px solid rgba(212, 175, 55, 0.25);
     border-radius: 6px;
     padding: 3px 8px;
     cursor: pointer;
-    font-weight: 500;
+    font-size: 0.7rem;
+    font-weight: 600;
     transition: all 0.2s;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
+    white-space: nowrap;
 }
 
-.btn-highlight:hover {
-    background: var(--color-gold-primary);
-    color: #06090e;
+.btn-highlight-compact:hover {
+    background: rgba(212, 175, 55, 0.25);
+    border-color: var(--color-gold-primary);
+}
+
+/* Light theme schedule overrides */
+body.light-theme .match-compact-card {
+    background: rgba(255, 255, 255, 0.7);
+    border-color: rgba(0,0,0,0.08);
+}
+
+body.light-theme .match-compact-card:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+body.light-theme .schedule-date-header {
+    color: #555;
+    border-color: rgba(0,0,0,0.1);
 }
 
 /* ==========================================
@@ -1373,15 +1420,7 @@ body.light-theme .match-score-box {
     border-color: #cbd5e1;
 }
 
-body.light-theme .match-item-card {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(0, 0, 0, 0.06);
-}
 
-body.light-theme .match-item-card:hover {
-    background: #ffffff;
-    border-color: var(--color-gold-primary);
-}
 
 body.light-theme .knockout-match-card {
     background: #ffffff;
@@ -1484,10 +1523,7 @@ body.light-theme .bracket-wrapper {
     border-color: rgba(0, 0, 0, 0.05);
 }
 
-body.light-theme .group-matches-sidebar {
-    background: rgba(255, 255, 255, 0.85);
-    border-color: rgba(0, 0, 0, 0.05);
-}
+
 
 body.light-theme .group-card {
     background: rgba(255, 255, 255, 0.85);
