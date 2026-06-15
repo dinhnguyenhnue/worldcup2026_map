@@ -716,6 +716,14 @@ body {
     border: 1px solid var(--border-glass);
 }
 
+.bracket-matches-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    flex-grow: 1;
+    min-height: 0;
+}
+
 /* Thẻ trận knockout */
 .knockout-match-card {
     background: rgba(6, 9, 14, 0.75);

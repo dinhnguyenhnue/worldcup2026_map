@@ -509,8 +509,8 @@
                 </div>
                 <div class="match-teams-grid">
                     <div class="match-team-row home">
-                        <span class="team-name" title="${homeTeam.name}">${homeTeam.name}</span>
                         <span class="team-flag">${getTeamFlagHtml(homeTeam)}</span>
+                        <span class="team-name" title="${homeTeam.name}">${homeTeam.name}</span>
                     </div>
                     <div class="match-score-box">${scoreDisplay}</div>
                     <div class="match-team-row away">
@@ -846,7 +846,7 @@
                 <div style="display: flex; align-items: center; gap: 8px; font-weight: 500;">
                     <span>${homeFlag} ${homeName}</span>
                     <span style="font-family: var(--font-mono); font-weight: bold; background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${scoreText}</span>
-                    <span>${awayName} ${awayFlag}</span>
+                    <span>${awayFlag} ${awayName}</span>
                 </div>
             `;
 
@@ -1170,7 +1170,8 @@
         let championText = "";
         if (finalMatch.status === "completed") {
             const champion = state.teams[finalMatch.winner];
-            championText = `🏆 Nhà vô địch World Cup 2026: ${champion?.flag} ${champion?.name}!`;
+            const champFlag = champion ? getTeamFlagHtml(champion) : "";
+            championText = `🏆 Nhà vô địch World Cup 2026: ${champFlag} ${champion?.name || ""}!`;
         }
 
         showToast(`Giải đấu đã được mô phỏng xong! ${championText}`, "success");
@@ -1231,9 +1232,10 @@
 
         const homeTeam = state.teams[match.home];
         const awayTeam = state.teams[match.away];
-        const title = `${homeTeam.flag} ${homeTeam.name} ${match.homeScore} - ${match.awayScore} ${awayTeam.name} ${awayTeam.flag}`;
+        const homeFlag = getTeamFlagHtml(homeTeam);
+        const awayFlag = getTeamFlagHtml(awayTeam);
         
-        document.getElementById("video-modal-title").innerText = `Highlight: ${homeTeam.name} vs ${awayTeam.name}`;
+        document.getElementById("video-modal-title").innerHTML = `Highlight: ${homeFlag} ${homeTeam?.name || "Chưa xác định"} vs ${awayFlag} ${awayTeam?.name || "Chưa xác định"}`;
         matchDesc.innerText = `Trận đấu diễn ra tại sân vận động ${match.stadium} ngày ${formatDate(match.date)}.`;
 
         const videoUrl = getMatchHighlightUrl(match);

@@ -58,6 +58,15 @@ def verify_website():
         page.wait_for_timeout(500)
         page.screenshot(path="d:/test/World_cup2026/assets/test_results/4_group_stage_simulated.png")
         
+        # Click the first highlight button in the sidebar
+        print("Mở Highlight modal của trận đấu vòng bảng...")
+        page.click(".btn-highlight >> nth=0")
+        page.wait_for_timeout(800)
+        page.screenshot(path="d:/test/World_cup2026/assets/test_results/10_highlight_modal.png")
+        # Close highlight modal
+        page.click("#btn-close-modal")
+        page.wait_for_timeout(300)
+        
         # 4. Kiểm thử nhấp thanh tiến trình chuyển đổi vòng thi đấu
         print("Nhấp vào 'Vòng 32 đội' trên thanh tiến trình...")
         page.click("#step-r32")
