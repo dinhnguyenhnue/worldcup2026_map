@@ -197,29 +197,7 @@
     // ==========================================
     // LOGIC PHÂN PHỐI NHÁNH ĐẤU KNOCK-OUT
     // ==========================================
-
-    // Tự động phân nhánh đấu knockout khi có kết quả
     function updateKnockoutBracket() {
-        // Kiểm tra xem tất cả các trận đấu vòng bảng đã hoàn thành chưa
-        const allGroupMatchesCompleted = state.matches.every(m => m.status === "completed");
-
-        if (!allGroupMatchesCompleted) {
-            // Nếu chưa xong vòng bảng, dọn dẹp các đội trong vòng 32 đội
-            state.knockout.round_32.forEach(m => {
-                m.home = null;
-                m.away = null;
-                m.homeScore = null;
-                m.awayScore = null;
-                m.status = "scheduled";
-                m.winner = null;
-                m.penalty = null;
-            });
-            clearSubsequentRounds();
-            saveData();
-            return;
-        }
-
-        // 1. Lấy kết quả vòng bảng
         const groups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
         const groupWinners = {};
         const groupRunnersUp = {};

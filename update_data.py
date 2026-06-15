@@ -230,23 +230,7 @@ def clear_subsequent_rounds(state):
             m['status'] = "scheduled"
             m['winner'] = None
             m['penalty'] = None
-
 def update_knockout_bracket_pairings(state):
-    all_group_completed = all(m['status'] == 'completed' for m in state['matches'])
-    
-    if not all_group_completed:
-        # Vòng bảng chưa hoàn thành, dọn dẹp các cặp knockout
-        for m in state['knockout']['round_32']:
-            m['home'] = None
-            m['away'] = None
-            m['homeScore'] = None
-            m['awayScore'] = None
-            m['status'] = 'scheduled'
-            m['winner'] = None
-            m['penalty'] = None
-        clear_subsequent_rounds(state)
-        return
-        
     groups = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
     group_winners = {}
     group_runners_up = {}
