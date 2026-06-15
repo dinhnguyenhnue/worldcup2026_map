@@ -58,16 +58,13 @@
 body {
     background-color: var(--bg-dark-primary);
     background-image: 
-        linear-gradient(135deg, 
-            rgba(229, 57, 53, 0.02) 0%, 
-            rgba(124, 77, 255, 0.02) 25%, 
-            rgba(0, 200, 83, 0.02) 50%, 
-            rgba(198, 255, 0, 0.02) 75%, 
-            rgba(83, 109, 254, 0.02) 100%),
-        radial-gradient(at 0% 0%, rgba(124, 77, 255, 0.12) 0px, transparent 50%),
+        radial-gradient(at 0% 0%, rgba(124, 77, 255, 0.1) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(229, 57, 53, 0.08) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(83, 109, 254, 0.06) 0px, transparent 50%),
-        radial-gradient(at 80% 50%, rgba(198, 255, 0, 0.03) 0px, transparent 40%);
+        linear-gradient(rgba(12, 15, 26, 0.92), rgba(12, 15, 26, 0.92)),
+        url('assets/wc2026_bg.jpg');
+    background-size: auto, auto, cover, cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
     color: var(--color-text-primary);
     font-family: var(--font-body);
@@ -1499,15 +1496,14 @@ body.light-theme {
     --card-shadow: 0 8px 24px 0 rgba(15, 23, 42, 0.06);
     
     background-image: 
-        linear-gradient(135deg, 
-            rgba(229, 57, 53, 0.015) 0%, 
-            rgba(124, 77, 255, 0.015) 25%, 
-            rgba(0, 200, 83, 0.015) 50%, 
-            rgba(198, 255, 0, 0.015) 75%, 
-            rgba(83, 109, 254, 0.015) 100%),
-        radial-gradient(at 0% 0%, rgba(229, 57, 53, 0.06) 0px, transparent 50%),
-        radial-gradient(at 100% 0%, rgba(124, 77, 255, 0.05) 0px, transparent 50%),
-        radial-gradient(at 50% 100%, rgba(83, 109, 254, 0.04) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(229, 57, 53, 0.04) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(124, 77, 255, 0.03) 0px, transparent 50%),
+        linear-gradient(rgba(250, 251, 255, 0.94), rgba(250, 251, 255, 0.94)),
+        url('assets/wc2026_bg.jpg');
+    background-size: auto, auto, cover, cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 body.light-theme .banner-overlay {
