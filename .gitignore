@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+api_matches.json
+yt_response.html
+assets/test_results/
+.system_generated/

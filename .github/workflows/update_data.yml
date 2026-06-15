@@ -1,0 +1,45 @@
+name: Auto-Update World Cup 2026 Data
+
+on:
+  schedule:
+    # Chạy mỗi tiếng một lần (phút 0)
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Cho phép kích hoạt thủ công qua giao diện GitHub
+    inputs:
+      reason:
+        description: 'Lý do chạy thủ công'
+        required: False
+        default: 'Cập nhật tỉ số World Cup 2026'
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Bắt buộc để cho phép commit/push dữ liệu mới
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Run update script
+      run: |
+        python update_data.py
+
+    - name: Commit and Push changes
+      run: |
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
+        git add data.json
+        # Kiểm tra xem có thay đổi hay không trước khi commit
+        if ! git diff --cached --exit-code; then
+          git commit -m "chore: tự động cập nhật kết quả trận đấu & highlight World Cup 2026 [skip ci]"
+          git push
+        else
+          echo "Không có thay đổi nào trong dữ liệu."
+        fi

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theo dõi trực quan kết quả World Cup 2026</title>
+    <meta name="description" content="Trang web theo dõi trực quan kết quả giải đấu World Cup 2026, cập nhật kết quả hằng ngày, tự động tính toán bảng xếp hạng và gắn link video highlight trực quan.">
+    <!-- Link file CSS tùy chỉnh -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header với banner sang trọng -->
+        <header class="main-header" id="main-header">
+            <div class="banner-container">
+                <img src="assets/banner.png" alt="FIFA World Cup 2026 banner" class="banner-image" id="banner-image">
+                <div class="banner-overlay"></div>
+            </div>
+            <div class="header-content">
+                <div class="logo-title">
+                    <h1>World Cup 2026</h1>
+                    <p>Hệ thống theo dõi trực quan kết quả thi đấu và sơ đồ nhánh đấu loại trực tiếp</p>
+                </div>
+                <button class="theme-toggle-btn" id="theme-toggle" aria-label="Chuyển chế độ sáng/tối">
+                    <span class="theme-icon" id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Thanh trạng thái tiến độ giải đấu -->
+        <section class="tournament-status-bar" id="status-bar" aria-label="Tiến độ giải đấu">
+            <div class="status-steps" id="status-steps">
+                <div class="status-step active" id="step-group" role="button" tabindex="0" title="Nhấp để xem vòng bảng">Vòng bảng</div>
+                <div class="status-step" id="step-r32" role="button" tabindex="0" title="Nhấp để xem vòng 32 đội">Vòng 32 đội</div>
+                <div class="status-step" id="step-r16" role="button" tabindex="0" title="Nhấp để xem vòng 16 đội">Vòng 16 đội</div>
+                <div class="status-step" id="step-quarter" role="button" tabindex="0" title="Nhấp để xem vòng tứ kết">Tứ kết</div>
+                <div class="status-step" id="step-semi" role="button" tabindex="0" title="Nhấp để xem vòng bán kết">Bán kết</div>
+                <div class="status-step" id="step-final" role="button" tabindex="0" title="Nhấp để xem vòng chung kết">Chung kết</div>
+            </div>
+            <div class="status-progress-info" id="progress-info">
+                Trận đấu đã chơi: <span id="played-matches-count">0</span> / <span id="total-matches-count">104</span>
+            </div>
+        </section>
+
+        <!-- Thanh điều hướng các Tabs -->
+        <nav class="tabs-navigation" id="tabs-nav" aria-label="Thanh điều hướng chính">
+            <button class="tab-btn active" id="tab-btn-group" data-tab="group-stage" aria-selected="true" aria-controls="group-stage-tab">
+                Vòng bảng
+            </button>
+            <button class="tab-btn" id="tab-btn-knockout" data-tab="knockout-bracket" aria-selected="false" aria-controls="knockout-bracket-tab">
+                Vòng loại trực tiếp
+            </button>
+            <button class="tab-btn" id="tab-btn-stats" data-tab="tournament-stats" aria-selected="false" aria-controls="tournament-stats-tab">
+                Thống kê giải đấu
+            </button>
+            <button class="tab-btn" id="tab-btn-admin" data-tab="admin-panel" aria-selected="false" aria-controls="admin-panel-tab">
+                Bảng điều khiển
+            </button>
+        </nav>
+
+        <main id="main-content">
+            <!-- TAB 1: VÒNG BẢNG & BẢNG XẾP HẠNG -->
+            <div class="tab-content active" id="group-stage-tab" role="tabpanel" aria-labelledby="tab-btn-group">
+                <div class="group-stage-layout">
+                    <!-- Lưới chứa 12 bảng đấu (A -> L) -->
+                    <section class="groups-grid" id="groups-grid" aria-label="Danh sách bảng đấu"></section>
+
+                    <!-- Lịch thi đấu vòng bảng bên phải -->
+                    <aside class="group-matches-sidebar" id="group-matches-sidebar" aria-label="Lịch thi đấu vòng bảng">
+                        <div class="sidebar-title">
+                            <h2>Lịch thi đấu</h2>
+                            <select class="filter-selector" id="group-filter" aria-label="Lọc lịch thi đấu">
+                                <option value="all">Tất cả bảng đấu</option>
+                                <option value="A">Bảng A</option>
+                                <option value="B">Bảng B</option>
+                                <option value="C">Bảng C</option>
+                                <option value="D">Bảng D</option>
+                                <option value="E">Bảng E</option>
+                                <option value="F">Bảng F</option>
+                                <option value="G">Bảng G</option>
+                                <option value="H">Bảng H</option>
+                                <option value="I">Bảng I</option>
+                                <option value="J">Bảng J</option>
+                                <option value="K">Bảng K</option>
+                                <option value="L">Bảng L</option>
+                            </select>
+                        </div>
+                        <div class="matches-scroll-container" id="group-matches-list">
+                            <!-- Các trận đấu sẽ được render động bằng JS -->
+                        </div>
+                    </aside>
+                </div>
+            </div>
+
+            <!-- TAB 2: VÒNG LOẠI TRỰC TIẾP (KNOCKOUT) -->
+            <div class="tab-content" id="knockout-bracket-tab" role="tabpanel" aria-labelledby="tab-btn-knockout">
+                <div class="knockout-layout-header">
+                    <h2>Sơ đồ nhánh đấu knockout</h2>
+                    <div class="bracket-controls">
+                        <button class="btn-control" id="btn-zoom-out">Thu nhỏ</button>
+                        <button class="btn-control" id="btn-zoom-reset">100%</button>
+                        <button class="btn-control" id="btn-zoom-in">Phóng to</button>
+                    </div>
+                </div>
+                
+                <!-- Khu vực bao ngoài sơ đồ có thanh cuộn -->
+                <div class="bracket-wrapper" id="bracket-wrapper">
+                    <div class="bracket-zoom-area" id="bracket-zoom-area">
+                        <!-- CÁNH TRÁI (LEFT WING) -->
+                        <div class="bracket-wing left-wing">
+                            <div class="bracket-column" id="col-l-r32">
+                                <div class="bracket-column-title">Vòng 32 đội</div>
+                                <div class="bracket-matches-list" id="matches-l-r32"></div>
+                            </div>
+                            <div class="bracket-column" id="col-l-r16">
+                                <div class="bracket-column-title">Vòng 16 đội</div>
+                                <div class="bracket-matches-list" id="matches-l-r16"></div>
+                            </div>
+                            <div class="bracket-column" id="col-l-quarter">
+                                <div class="bracket-column-title">Tứ kết</div>
+                                <div class="bracket-matches-list" id="matches-l-quarter"></div>
+                            </div>
+                            <div class="bracket-column" id="col-l-semi">
+                                <div class="bracket-column-title">Bán kết</div>
+                                <div class="bracket-matches-list" id="matches-l-semi"></div>
+                            </div>
+                        </div>
+
+                        <!-- CỘT TRUNG TÂM (CENTER COLUMN) -->
+                        <div class="bracket-center">
+                            <div class="trophy-display" id="trophy-display">
+                                <span class="trophy-emoji">🏆</span>
+                                <div class="trophy-glow"></div>
+                            </div>
+                            
+                            <div class="bracket-column" id="col-finals">
+                                <div class="bracket-column-title">Chung kết</div>
+                                <div class="bracket-matches-list" id="matches-finals"></div>
+                            </div>
+                            
+                            <div class="bracket-column" id="col-third-place">
+                                <div class="bracket-column-title">Tranh hạng ba</div>
+                                <div class="bracket-matches-list" id="matches-third-place"></div>
+                            </div>
+                        </div>
+
+                        <!-- CÁNH PHẢI (RIGHT WING) -->
+                        <div class="bracket-wing right-wing">
+                            <div class="bracket-column" id="col-r-semi">
+                                <div class="bracket-column-title">Bán kết</div>
+                                <div class="bracket-matches-list" id="matches-r-semi"></div>
+                            </div>
+                            <div class="bracket-column" id="col-r-quarter">
+                                <div class="bracket-column-title">Tứ kết</div>
+                                <div class="bracket-matches-list" id="matches-r-quarter"></div>
+                            </div>
+                            <div class="bracket-column" id="col-r-r16">
+                                <div class="bracket-column-title">Vòng 16 đội</div>
+                                <div class="bracket-matches-list" id="matches-r-r16"></div>
+                            </div>
+                            <div class="bracket-column" id="col-r-r32">
+                                <div class="bracket-column-title">Vòng 32 đội</div>
+                                <div class="bracket-matches-list" id="matches-r-r32"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: THỐNG KÊ GIẢI ĐẤU -->
+            <div class="tab-content" id="tournament-stats-tab" role="tabpanel" aria-labelledby="tab-btn-stats">
+                <!-- Thẻ thông tin nhanh số liệu tổng quan -->
+                <section class="overview-stats-grid" aria-label="Thống kê nhanh">
+                    <div class="overview-box">
+                        <div class="overview-val" id="stat-matches-played">0</div>
+                        <div class="overview-lbl">Trận đấu đã chơi</div>
+                    </div>
+                    <div class="overview-box">
+                        <div class="overview-val" id="stat-total-goals">0</div>
+                        <div class="overview-lbl">Tổng số bàn thắng</div>
+                    </div>
+                    <div class="overview-box">
+                        <div class="overview-val" id="stat-avg-goals">0.0</div>
+                        <div class="overview-lbl">Bàn thắng / trận</div>
+                    </div>
+                    <div class="overview-box">
+                        <div class="overview-val" id="stat-top-team">-</div>
+                        <div class="overview-lbl">Ghi bàn nhiều nhất</div>
+                    </div>
+                </section>
+
+                <div class="stats-grid">
+                    <!-- Bảng Vua phá lưới -->
+                    <section class="stats-card" aria-label="Vua phá lưới">
+                        <h2 class="stats-card-title">⚽ Vua phá lưới</h2>
+                        <div class="stats-list" id="scorers-list">
+                            <!-- JS tự động chèn dữ liệu -->
+                        </div>
+                    </section>
+
+                    <!-- Bảng Kiến tạo -->
+                    <section class="stats-card" aria-label="Kiến tạo nhiều nhất">
+                        <h2 class="stats-card-title">👟 Kiến tạo nhiều nhất</h2>
+                        <div class="stats-list" id="assists-list">
+                            <!-- JS tự động chèn dữ liệu -->
+                        </div>
+                    </section>
+
+                    <!-- Đội tuyển có hàng thủ tốt nhất -->
+                    <section class="stats-card" aria-label="Hàng thủ tốt nhất">
+                        <h2 class="stats-card-title">🛡️ Hàng thủ tốt nhất (Giữ sạch lưới)</h2>
+                        <div class="stats-list" id="defenders-list">
+                            <!-- JS tự động chèn dữ liệu -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- TAB 4: BẢNG ĐIỀU KHIỂN (ADMIN PANEL) -->
+            <div class="tab-content" id="admin-panel-tab" role="tabpanel" aria-labelledby="tab-btn-admin">
+                <div class="admin-layout">
+                    <!-- Form cập nhật kết quả -->
+                    <section class="admin-card" aria-label="Cập nhật kết quả">
+                        <h2 class="admin-card-title">Cập nhật kết quả trận đấu</h2>
+                        <form id="match-update-form">
+                            <div class="form-group">
+                                <label for="admin-match-select">Chọn trận đấu</label>
+                                <select class="form-control" id="admin-match-select">
+                                    <option value="" disabled selected>Vui lòng chọn trận đấu bên phải...</option>
+                                    <!-- JS tự động chèn trận đấu -->
+                                </select>
+                            </div>
+                            
+                            <div class="form-group" id="team-vs-display" style="display: none; text-align: center; font-size: 1.15rem; font-weight: bold; margin-bottom: 15px;">
+                                <span id="admin-home-flag"></span> <span id="admin-home-name">Đội nhà</span>
+                                <span style="margin: 0 15px; color: var(--color-gold-secondary);">VS</span>
+                                <span id="admin-away-name">Đội khách</span> <span id="admin-away-flag"></span>
+                            </div>
+
+                            <div class="form-group score-inputs-flex" id="score-inputs-container" style="display: none;">
+                                <div class="score-input-box">
+                                    <label for="admin-home-score" id="lbl-home-score">Bàn thắng (Nhà)</label>
+                                    <input type="number" class="form-control" id="admin-home-score" min="0" required>
+                                </div>
+                                <div class="score-dash">-</div>
+                                <div class="score-input-box">
+                                    <label for="admin-away-score" id="lbl-away-score">Bàn thắng (Khách)</label>
+                                    <input type="number" class="form-control" id="admin-away-score" min="0" required>
+                                </div>
+                            </div>
+
+                            <!-- Hiển thị loạt sút luân lưu nếu là vòng knockout và tỉ số hòa -->
+                            <div class="form-group" id="penalty-inputs-container" style="display: none;">
+                                <label style="text-align: center; color: var(--color-gold-secondary); display: block; margin-bottom: 10px;">Sút luân lưu (Penalties)</label>
+                                <div class="score-inputs-flex">
+                                    <div class="score-input-box">
+                                        <input type="number" class="form-control" id="admin-home-pen" min="0" placeholder="Số quả">
+                                    </div>
+                                    <div class="score-dash">:</div>
+                                    <div class="score-input-box">
+                                        <input type="number" class="form-control" id="admin-away-pen" min="0" placeholder="Số quả">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" id="highlight-input-container" style="display: none;">
+                                <label for="admin-highlight-url">Link video highlight (YouTube)</label>
+                                <input type="url" class="form-control" id="admin-highlight-url" placeholder="https://www.youtube.com/watch?v=...">
+                                <small style="display: block; color: var(--color-text-secondary); margin-top: 4px; font-size: 0.75rem;">
+                                    * Để trống hệ thống sẽ tự động tạo link tìm kiếm highlight trên YouTube.
+                                </small>
+                            </div>
+
+                            <!-- Nhập người ghi bàn (tùy chọn để làm giàu thống kê) -->
+                            <div class="form-group" id="scorers-input-container" style="display: none;">
+                                <label for="admin-scorers-select">Cập nhật cầu thủ ghi bàn trong trận</label>
+                                <div style="display: flex; gap: 10px; margin-bottom: 8px;">
+                                    <select class="form-control" id="admin-scorers-select" style="flex: 2;">
+                                        <!-- JS tự động chèn danh sách cầu thủ của 2 đội -->
+                                    </select>
+                                    <input type="number" class="form-control" id="admin-scorers-goals" min="1" value="1" style="flex: 0.5; text-align: center;">
+                                    <button type="button" class="btn-secondary" id="btn-add-player-goal" style="padding: 5px 15px;">Thêm</button>
+                                </div>
+                                <div id="temp-match-scorers" style="font-size: 0.8rem; color: var(--color-gold-secondary); max-height: 80px; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 4px;"></div>
+                            </div>
+
+                            <button type="submit" class="btn-primary" id="btn-save-match" style="display: none;">Cập nhật kết quả</button>
+                        </form>
+                    </section>
+
+                    <!-- Chức năng giả lập và Danh sách trận đấu -->
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <section class="admin-card simulation-panel" aria-label="Giả lập tự động">
+                            <h2 class="admin-card-title">Mô phỏng giải đấu</h2>
+                            <div class="simulation-desc">
+                                Bạn có thể giả lập tự động kết quả các trận đấu để kiểm tra toàn bộ hoạt động của bảng xếp hạng, cờ quốc gia, tự động phân nhánh knockout và gắn link highlight.
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <button class="btn-secondary" id="btn-sim-day">Mô phỏng 1 ngày</button>
+                                <button class="btn-secondary" id="btn-sim-group">Mô phỏng vòng bảng</button>
+                                <button class="btn-secondary" id="btn-sim-all">Mô phỏng toàn giải</button>
+                                <button class="btn-secondary" id="btn-reset-all" style="color: var(--color-red-primary); border-color: rgba(255,82,82,0.2);">Đặt lại giải đấu</button>
+                            </div>
+                        </section>
+
+                        <section class="admin-card" aria-label="Danh sách trận đấu cần cập nhật">
+                            <h2 class="admin-card-title">Danh sách trận đấu</h2>
+                            <div class="admin-matches-list" id="admin-matches-list">
+                                <!-- Render danh sách trận đấu -->
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hộp thoại (Modal) xem video highlight -->
+    <div class="modal-overlay" id="video-modal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+        <div class="modal-box">
+            <div class="modal-header">
+                <span class="modal-title" id="video-modal-title">Highlight trận đấu</span>
+                <button class="modal-close-btn" id="btn-close-modal" aria-label="Đóng hộp thoại">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="video-player-container" id="video-player-container">
+                    <!-- JS sẽ chèn iframe hoặc fallback -->
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <p style="font-size: 0.9rem; color: var(--color-text-secondary);" id="video-match-desc"></p>
+                    <a href="#" target="_blank" class="btn-highlight" id="btn-watch-youtube">Xem trực tiếp trên YouTube</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nơi nhận thông báo toast -->
+    <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+    <!-- Tải các kịch bản JS -->
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
