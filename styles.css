@@ -629,7 +629,7 @@ body {
 }
 
 .bracket-wing.right-wing {
-    flex-direction: row;
+    flex-direction: row-reverse;
 }
 
 .bracket-center {

@@ -17,6 +17,7 @@
     // Khởi động ứng dụng
     async function init() {
         await loadData();
+        propagateKnockoutWinners(); // Tính placeholder và đẩy kết quả vòng trước lên vòng sau
         setupEventListeners();
         renderActiveTab();
         updateTournamentProgressBar();
@@ -28,6 +29,7 @@
             zoomArea.style.transform = `scale(${state.zoomLevel})`;
         }
     }
+
 
     // Tải dữ liệu từ data.json, localStorage hoặc dữ liệu mẫu ban đầu
     async function loadData() {
@@ -254,8 +256,6 @@
     // Hàm đệ quy/tuần tự đẩy các đội thắng lên vòng tiếp theo
     function propagateKnockoutWinners() {
         // Vòng 32 -> Vòng 16
-        // K17 đấu: Thắng K1 vs Thắng K2
-        // K18 đấu: Thắng K3 vs Thắng K4, vv.
         for (let i = 0; i < 8; i++) {
             const match1 = state.knockout.round_32[i * 2];
             const match2 = state.knockout.round_32[i * 2 + 1];
@@ -264,7 +264,10 @@
             nextMatch.home = (match1.status === "completed") ? match1.winner : null;
             nextMatch.away = (match2.status === "completed") ? match2.winner : null;
 
-            // Nếu đội bị rút do thay đổi kết quả vòng trước
+            // Placeholder có nghĩa khi chưa xác định
+            nextMatch.placeholderHome = `Thắng ${match1.id}`;
+            nextMatch.placeholderAway = `Thắng ${match2.id}`;
+
             if (!nextMatch.home || !nextMatch.away) {
                 nextMatch.status = "scheduled";
                 nextMatch.homeScore = null;
@@ -283,6 +286,9 @@
             nextMatch.home = (match1.status === "completed") ? match1.winner : null;
             nextMatch.away = (match2.status === "completed") ? match2.winner : null;
 
+            nextMatch.placeholderHome = `Thắng ${match1.id}`;
+            nextMatch.placeholderAway = `Thắng ${match2.id}`;
+
             if (!nextMatch.home || !nextMatch.away) {
                 nextMatch.status = "scheduled";
                 nextMatch.homeScore = null;
@@ -300,6 +306,9 @@
 
             nextMatch.home = (match1.status === "completed") ? match1.winner : null;
             nextMatch.away = (match2.status === "completed") ? match2.winner : null;
+
+            nextMatch.placeholderHome = `Thắng ${match1.id}`;
+            nextMatch.placeholderAway = `Thắng ${match2.id}`;
 
             if (!nextMatch.home || !nextMatch.away) {
                 nextMatch.status = "scheduled";
@@ -320,6 +329,8 @@
         // Chung kết
         finalMatch.home = (semi1.status === "completed") ? semi1.winner : null;
         finalMatch.away = (semi2.status === "completed") ? semi2.winner : null;
+        finalMatch.placeholderHome = `Thắng ${semi1.id}`;
+        finalMatch.placeholderAway = `Thắng ${semi2.id}`;
 
         if (!finalMatch.home || !finalMatch.away) {
             finalMatch.status = "scheduled";
@@ -331,12 +342,13 @@
 
         // Tranh hạng ba
         if (semi1.status === "completed" && semi2.status === "completed") {
-            // Lấy đội thua bán kết
             thirdPlaceMatch.home = (semi1.winner === semi1.home) ? semi1.away : semi1.home;
             thirdPlaceMatch.away = (semi2.winner === semi2.home) ? semi2.away : semi2.home;
         } else {
             thirdPlaceMatch.home = null;
             thirdPlaceMatch.away = null;
+            thirdPlaceMatch.placeholderHome = `Thua ${semi1.id}`;
+            thirdPlaceMatch.placeholderAway = `Thua ${semi2.id}`;
             thirdPlaceMatch.status = "scheduled";
             thirdPlaceMatch.homeScore = null;
             thirdPlaceMatch.awayScore = null;
@@ -344,6 +356,7 @@
             thirdPlaceMatch.penalty = null;
         }
     }
+
 
     // Dọn sạch dữ liệu các vòng sau nếu kết quả vòng bảng bị làm mới
     function clearSubsequentRounds() {
@@ -483,6 +496,13 @@
         if (filterVal !== "all") {
             filteredMatches = state.matches.filter(m => m.group === filterVal);
         }
+
+        // Sắp xếp theo ngày và giờ thi đấu
+        filteredMatches = [...filteredMatches].sort((a, b) => {
+            const dtA = `${a.date} ${a.time}`;
+            const dtB = `${b.date} ${b.time}`;
+            return dtA.localeCompare(dtB);
+        });
 
         if (filteredMatches.length === 0) {
             matchesContainer.innerHTML = `<p style="color: var(--color-text-secondary); text-align: center; margin-top: 20px;">Không tìm thấy trận đấu nào.</p>`;
